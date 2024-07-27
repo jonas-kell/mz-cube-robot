@@ -1,0 +1,17 @@
+[connection]
+id=ev3dev
+uuid=65fdb6ee-1955-3a79-85a1-0b3586c1b12d
+type=ethernet
+autoconnect-priority=-999
+
+[ethernet]
+mac-address=12:16:53:4A:D7:77
+
+[ipv4]
+method=shared
+
+[ipv6]
+addr-gen-mode=stable-privacy
+method=auto
+
+[proxy]
