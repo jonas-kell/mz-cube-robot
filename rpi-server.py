@@ -6,7 +6,8 @@ from threading import Condition
 from http import server
 import re
 import requests
-from pprint import pprint
+import nxt.locator
+import nxt.motor
 
 PAGE = """\
 <html>
@@ -65,6 +66,26 @@ def parse_string(input_string: str):
 
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
+    b = None
+
+    @classmethod
+    def initialize_b(cls):
+        cls.b = nxt.locator.find()
+
+    @classmethod
+    def cleanup_b(cls):
+        if cls.b:
+            cls.b.close()
+            cls.b = None
+
+    def __enter__(self):
+        if StreamingHandler.b is None:
+            StreamingHandler.initialize_b()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        StreamingHandler.cleanup_b()
+
     def do_GET(self):
         didSomething = False
 
@@ -145,7 +166,16 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 # forward to nxt
                 for port, minus, percent in instructions:
                     if port == "E" or port == "F":
-                        print("pass to nxt")
+                        if self.b:
+                            mymotor = self.b.get_motor(nxt.motor.Port.A)
+                            # Full circle in one direction.
+                            mymotor.turn(100, 360)
+
+                            if state != "error":
+                                state = "success"
+                        else:
+                            print("NXT not there, could not forward")
+                            state = "error"
 
             except Exception as e:
                 print(e)
