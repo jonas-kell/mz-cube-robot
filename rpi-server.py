@@ -155,9 +155,10 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 # https://ni.srht.site/nxt-python/latest/api/motor.html
                 for port, minus, percent in instructions:
                     if port == "E" or port == "F":
+                        print(f"Forwarding request {port, minus, percent} to nxt")
                         if NXTbrick:
                             nxtPort = nxt.motor.Port.A
-                            if nxtPort == "F":
+                            if port == "F":
                                 nxtPort = nxt.motor.Port.B
 
                             mymotor = NXTbrick.get_motor(nxtPort)
