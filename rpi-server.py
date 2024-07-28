@@ -120,6 +120,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/html")
             self.send_header("Content-Length", len(content))
             self.end_headers()
+            self.wfile.write(content)
 
         if instructions is not None and len(instructions) != 0:
             didSomething = True
@@ -128,23 +129,27 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             ## control motors
 
             # forward to ev3 server
-            ev3URL = "http://10.42.0.3/"
-            ev3count = 0
-            for port, minus, percent in instructions:
-                if port == "A" or port == "B" or port == "C" or port == "D":
-                    ev3URL += f"{port}{'-' if minus else ''}{percent}&"
-                    ev3count += 1
-            if ev3count > 0:
-                print(f"Forwarding request {ev3URL} to ev3")
-                response = requests.get(ev3URL, timeout=2)
-                pprint(vars(response.raw))
+            try:
+                ev3URL = "http://10.42.0.3/"
+                ev3count = 0
+                for port, minus, percent in instructions:
+                    if port == "A" or port == "B" or port == "C" or port == "D":
+                        ev3URL += f"{port}{'-' if minus else ''}{percent}&"
+                        ev3count += 1
+                if ev3count > 0:
+                    print(f"Forwarding request {ev3URL} to ev3")
+                    response = requests.get(ev3URL, timeout=2)
+                    response.raise_for_status()
+                    state = response.text
 
-                state = response.text
+                # forward to nxt
+                for port, minus, percent in instructions:
+                    if port == "E" or port == "F":
+                        print("pass to nxt")
 
-            # forward to nxt
-            for port, minus, percent in instructions:
-                if port == "E" or port == "F":
-                    pass
+            except Exception as e:
+                print(e)
+                state = "error"
 
             ## control motors
 
@@ -153,6 +158,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/html")
             self.send_header("Content-Length", len(content))
             self.end_headers()
+            self.wfile.write(content)
 
         # fallback
         if not didSomething:
