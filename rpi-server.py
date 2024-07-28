@@ -111,7 +111,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header("Content-Length", len(content))
             self.end_headers()
 
-        if len(instructions) != 0:
+        if instructions is not None and len(instructions) != 0:
             state = ""
             # motor control!!
             print("motor control")
