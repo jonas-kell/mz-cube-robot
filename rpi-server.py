@@ -179,12 +179,15 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                                 try:
                                     if time() - startTime > 2:
                                         # timeout
+                                        print("NXT motor move timeout")
                                         state = "error"
                                         break
-                                    NXTbrick.message_read(
+                                    test = NXTbrick.message_read(
                                         2, 0, False
                                     )  # message should be there, as long as brick is moving the motor
+                                    print(test)
                                 except nxt.error.DirectProtocolError:
+                                    print("Test message missing, return")
                                     break  # no more message to be read, meaning the check message was removed and it is done
 
                             if state != "error":
