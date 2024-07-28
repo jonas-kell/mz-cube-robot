@@ -4,6 +4,7 @@ import logging
 import socketserver
 from threading import Condition
 from http import server
+import re
 
 PAGE = """\
 <html>
@@ -36,11 +37,35 @@ class StreamingOutput(object):
         return self.buffer.write(buf)
 
 
+# [(port, minus, percent)]
+def parse_string(input_string: str):
+    pattern = re.compile(r"^([ABCD](-?(25|50|75|100)&))+$")
+    if (
+        not pattern.match(input_string)
+        or input_string.count("A") > 1
+        or input_string.count("B") > 1
+        or input_string.count("C") > 1
+        or input_string.count("D") > 1
+    ):
+        return None
+
+    parts = input_string.split("&")
+    result = []
+    for part in parts:
+        match = re.match(r"^([ABCD])(-?)(25|50|75|100)$", part)
+        if match:
+            letter, minus, value = match.groups()
+            result.append((letter, minus == "-", int(value)))
+
+    return result
+
+
 class StreamingHandler(server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/":
             self.send_response(301)
             self.send_header("Location", "/index.html")
+            print("Top Level required")
             self.end_headers()
         elif self.path == "/index.html":
             content = PAGE.encode("utf-8")
@@ -48,6 +73,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/html")
             self.send_header("Content-Length", len(content))
             self.end_headers()
+            print("Index required")
             self.wfile.write(content)
         elif self.path == "/stream.mjpg":
             self.send_response(200)
@@ -73,9 +99,31 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 logging.warning(
                     "Removed streaming client %s: %s", self.client_address, str(e)
                 )
-        else:
-            self.send_error(404)
+
+        command = self.path.lstrip("/")
+
+        instructions = parse_string(command)
+
+        if instructions is not None and len(instructions) == 0:
+            content = "nothing".encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Content-Length", len(content))
             self.end_headers()
+
+        if len(instructions) != 0:
+            state = ""
+            # motor control!!
+            print("motor control")
+
+            content = state.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Content-Length", len(content))
+            self.end_headers()
+
+        self.send_error(404)
+        self.end_headers()
 
 
 class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
@@ -89,6 +137,7 @@ with picamera.PiCamera(resolution="640x480", framerate=30) as camera:
     camera.start_recording(output, format="mjpeg")
     try:
         address = ("0.0.0.0", 80)
+        print("Starting server on ", address)
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
     finally:

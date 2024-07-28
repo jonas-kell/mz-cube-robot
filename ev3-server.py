@@ -103,8 +103,6 @@ def parse_string(input_string: str):
     ):
         return []
 
-    print("check through")
-
     parts = input_string.split("&")
     result = []
     for part in parts:
