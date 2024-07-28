@@ -164,6 +164,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                                 nxtPort = "B"  # = F
 
                             NXTbrick.message_write(1, nxtPort.encode("utf-8"))
+                            # for finished check
+                            NXTbrick.message_write(2, nxtPort.encode("utf-8"))
                             NXTbrick.message_write(
                                 1,
                                 (int(percent / 100 * 360)).to_bytes(
@@ -179,11 +181,11 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                                         # timeout
                                         state = "error"
                                         break
-                                    NXTbrick.message_read(2, 0, True)
-                                    break
-                                except nxt.error.DirectProtocolError as err:
-                                    print(err)
-                                    pass
+                                    NXTbrick.message_read(
+                                        2, 0, False
+                                    )  # message should be there, as long as brick is moving the motor
+                                except nxt.error.DirectProtocolError:
+                                    break  # no more message to be read, meaning the check message was removed and it is done
 
                             if state != "error":
                                 state = "success"
