@@ -5,6 +5,7 @@ import socketserver
 from threading import Condition
 from http import server
 import re
+import requests
 
 PAGE = """\
 <html>
@@ -39,20 +40,22 @@ class StreamingOutput(object):
 
 # [(port, minus, percent)]
 def parse_string(input_string: str):
-    pattern = re.compile(r"^([ABCD](-?(25|50|75|100)&))+$")
+    pattern = re.compile(r"^([ABCDEF](-?(25|50|75|100)&))+$")
     if (
         not pattern.match(input_string)
         or input_string.count("A") > 1
         or input_string.count("B") > 1
         or input_string.count("C") > 1
         or input_string.count("D") > 1
+        or input_string.count("E") > 1
+        or input_string.count("F") > 1
     ):
         return None
 
     parts = input_string.split("&")
     result = []
     for part in parts:
-        match = re.match(r"^([ABCD])(-?)(25|50|75|100)$", part)
+        match = re.match(r"^([ABCDEF])(-?)(25|50|75|100)$", part)
         if match:
             letter, minus, value = match.groups()
             result.append((letter, minus == "-", int(value)))
@@ -120,8 +123,22 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         if instructions is not None and len(instructions) != 0:
             didSomething = True
             state = ""
-            # motor control!!
-            print("motor control")
+
+            ## control motors
+
+            # forward to ev3 server
+            ev3URL = "http://10.42.0.3/"
+            ev3count = 0
+            for port, minus, percent in instructions:
+                if port == "A" or port == "B" or port == "C" or port == "D":
+                    ev3URL += f"{port}{'-' if minus else ''}{percent}&"
+                    ev3count += 1
+            if ev3count > 0:
+                print(f"Forwarding request {ev3URL} to ev3")
+                response = requests.get(ev3URL, timeout=2)
+                print(response)
+
+            ## control motors
 
             content = state.encode("utf-8")
             self.send_response(200)

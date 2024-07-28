@@ -139,7 +139,7 @@ def motor_callback(method, url):
             motors.append(motor)
 
         for motor in motors:
-            motor.wait_until_not_moving(1000)
+            motor.wait_until_not_moving(2000)
     except Exception as e:
         return "error\n"
 
