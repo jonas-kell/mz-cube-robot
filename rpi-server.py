@@ -137,8 +137,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 
             ## control motors
 
-            # forward to ev3 server
             try:
+                # forward to ev3 server
                 ev3URL = "http://10.42.0.3/"
                 ev3count = 0
                 for port, minus, percent in instructions:
@@ -162,7 +162,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                                 nxtPort = nxt.motor.Port.B
 
                             mymotor = NXTbrick.get_motor(nxtPort)
-                            nxt_scaling = 345  # the motor overshoots a quite bit when putting 260, attempt to correct this here
+                            nxt_scaling = 325  # the motor overshoots a quite bit when putting 260, attempt to correct this here
                             mymotor.turn(
                                 -128 if minus else 127,
                                 int(nxt_scaling * percent / 100),
