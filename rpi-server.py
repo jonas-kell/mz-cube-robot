@@ -8,6 +8,7 @@ import re
 import requests
 import nxt.locator
 import nxt.motor
+import nxt.error.DirectProtocolError
 
 PAGE = """\
 <html>
@@ -168,6 +169,14 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                                     4, "little", signed=True
                                 ),
                             )
+
+                            # wait until turn finished (not possible to paralellize)
+                            while True:
+                                try:
+                                    NXTbrick.message_read(2, 0, True)
+                                    break
+                                except nxt.error.DirectProtocolError:
+                                    pass
 
                             if state != "error":
                                 state = "success"
