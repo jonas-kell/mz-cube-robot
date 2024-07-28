@@ -152,12 +152,21 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                     state = response.text
 
                 # forward to nxt
+                # https://ni.srht.site/nxt-python/latest/api/motor.html
                 for port, minus, percent in instructions:
                     if port == "E" or port == "F":
                         if NXTbrick:
-                            mymotor = NXTbrick.get_motor(nxt.motor.Port.A)
-                            # Full circle in one direction.
-                            mymotor.turn(100, 360)
+                            nxtPort = nxt.motor.Port.A
+                            if nxtPort == "F":
+                                nxtPort = nxt.motor.Port.B
+
+                            mymotor = NXTbrick.get_motor()
+                            nxt_scaling = 345  # the motor overshoots a quite bit when putting 260, attempt to correct this here
+                            mymotor.turn(
+                                -127 if minus else 128,
+                                int(nxt_scaling * percent / 100),
+                                timeout=2,
+                            )
 
                             if state != "error":
                                 state = "success"
