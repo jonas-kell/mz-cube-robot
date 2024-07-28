@@ -136,7 +136,12 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             if ev3count > 0:
                 print(f"Forwarding request {ev3URL} to ev3")
                 response = requests.get(ev3URL, timeout=2)
-                print(response)
+                state = response.text
+
+            # forward to nxt
+            for port, minus, percent in instructions:
+                if port == "E" or port == "F":
+                    pass
 
             ## control motors
 
