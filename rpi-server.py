@@ -21,6 +21,14 @@ PAGE = """\
 </html>
 """
 
+NXTbrick = None
+
+NXTbrick = nxt.locator.find()
+if NXTbrick:
+    print("NXT found")
+else:
+    print("NXT not found")
+
 
 class StreamingOutput(object):
     def __init__(self):
@@ -66,34 +74,6 @@ def parse_string(input_string: str):
 
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
-    b = None
-
-    @classmethod
-    def initialize_b(cls):
-        print("Init NXT Connection")
-        cls.b = nxt.locator.find()
-        if cls.b:
-            print("NXT found")
-        else:
-            print("NXT not found")
-
-    @classmethod
-    def cleanup_b(cls):
-        if cls.b:
-            print("Close NXT Connection")
-            cls.b.close()
-            cls.b = None
-
-    def __enter__(self):
-        print("Init streaming Handler")
-        if StreamingHandler.b is None:
-            StreamingHandler.initialize_b()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        print("Cleanup streaming Handler")
-        StreamingHandler.cleanup_b()
-
     def do_GET(self):
         didSomething = False
 
@@ -174,8 +154,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 # forward to nxt
                 for port, minus, percent in instructions:
                     if port == "E" or port == "F":
-                        if self.b:
-                            mymotor = self.b.get_motor(nxt.motor.Port.A)
+                        if NXTbrick:
+                            mymotor = NXTbrick.get_motor(nxt.motor.Port.A)
                             # Full circle in one direction.
                             mymotor.turn(100, 360)
 
@@ -220,3 +200,7 @@ with picamera.PiCamera(resolution="640x480", framerate=30) as camera:
         server.serve_forever()
     finally:
         camera.stop_recording()
+
+        if NXTbrick:
+            print("Close NXT Connection")
+            NXTbrick.close()
