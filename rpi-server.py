@@ -135,7 +135,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 
         if instructions is not None and len(instructions) != 0:
             didSomething = True
-            state = ""
+            state = "\n"
 
             ## control motors
 
@@ -180,7 +180,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                                     if time() - startTime > 2:
                                         # timeout
                                         print("NXT motor move timeout")
-                                        state = "error"
+                                        state = "error\n"
                                         break
                                     NXTbrick.message_read(
                                         2, 0, False
@@ -189,15 +189,15 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                                     print("NXT motor movement confimed working")
                                     break  # no more message to be read, meaning the check message was removed and it is done
 
-                            if state != "error":
-                                state = "success"
+                            if state != "error\n":
+                                state = "success\n"
                         else:
                             print("NXT not there, could not forward")
-                            state = "error"
+                            state = "error\n"
 
             except Exception as e:
                 print(e)
-                state = "error"
+                state = "error\n"
 
             ## control motors
 
