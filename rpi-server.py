@@ -62,12 +62,16 @@ def parse_string(input_string: str):
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
     def do_GET(self):
+        didSomething = False
+
         if self.path == "/":
+            didSomething = True
             self.send_response(301)
             self.send_header("Location", "/index.html")
             print("Top Level required")
             self.end_headers()
         elif self.path == "/index.html":
+            didSomething = True
             content = PAGE.encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html")
@@ -76,6 +80,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             print("Index required")
             self.wfile.write(content)
         elif self.path == "/stream.mjpg":
+            didSomething = True
             self.send_response(200)
             self.send_header("Age", 0)
             self.send_header("Cache-Control", "no-cache, private")
@@ -105,6 +110,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         instructions = parse_string(command)
 
         if instructions is not None and len(instructions) == 0:
+            didSomething = True
             content = "nothing".encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html")
@@ -112,6 +118,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.end_headers()
 
         if instructions is not None and len(instructions) != 0:
+            didSomething = True
             state = ""
             # motor control!!
             print("motor control")
@@ -122,8 +129,10 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header("Content-Length", len(content))
             self.end_headers()
 
-        self.send_error(404)
-        self.end_headers()
+        # fallback
+        if not didSomething:
+            self.send_error(404)
+            self.end_headers()
 
 
 class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
