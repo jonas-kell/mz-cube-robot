@@ -5,7 +5,6 @@ from ev3dev2.motor import (
     OUTPUT_B,
     OUTPUT_C,
     OUTPUT_D,
-    SpeedPercent,
 )
 import re
 
@@ -120,7 +119,7 @@ def parse_string(input_string: str):
 def run_motor(port, minus, percent):
     ports = {"A": OUTPUT_A, "B": OUTPUT_B, "C": OUTPUT_C, "D": OUTPUT_D}
     motor = LargeMotor(ports[port])
-    motor.on_for_rotations(100, percent / 100.0, True, False)
+    motor.on_for_rotations(100, (-1 if minus else 1) * percent / 100.0, True, False)
 
     return motor
 
