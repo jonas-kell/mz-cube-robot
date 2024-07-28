@@ -70,20 +70,28 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 
     @classmethod
     def initialize_b(cls):
+        print("Init NXT Connection")
         cls.b = nxt.locator.find()
+        if cls.b:
+            print("NXT found")
+        else:
+            print("NXT not found")
 
     @classmethod
     def cleanup_b(cls):
         if cls.b:
+            print("Close NXT Connection")
             cls.b.close()
             cls.b = None
 
     def __enter__(self):
+        print("Init streaming Handler")
         if StreamingHandler.b is None:
             StreamingHandler.initialize_b()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        print("Cleanup streaming Handler")
         StreamingHandler.cleanup_b()
 
     def do_GET(self):
