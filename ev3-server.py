@@ -8,7 +8,6 @@ from ev3dev2.motor import (
     SpeedPercent,
 )
 import re
-from typing import List, Tuple
 
 
 # url_callback: provided function, that takes the following inputs:
@@ -94,7 +93,7 @@ def parseUrl(url):
 
 
 # [(port, minus, percent)]
-def parse_string(input_string: str) -> List[Tuple[str, bool, int]]:
+def parse_string(input_string: str):
     pattern = re.compile(r"^([ABCD](-?(25|50|75|100)&))+$")
     if (
         not pattern.match(input_string)
@@ -121,8 +120,7 @@ def parse_string(input_string: str) -> List[Tuple[str, bool, int]]:
 def run_motor(port, minus, percent):
     ports = {"A": OUTPUT_A, "B": OUTPUT_B, "C": OUTPUT_C, "D": OUTPUT_D}
     motor = LargeMotor(ports[port])
-    speed = SpeedPercent(-percent if minus else percent)
-    motor.on_for_rotations(speed, percent / 100.0, True, False)
+    motor.on_for_rotations(100, percent / 100.0, True, False)
 
     return motor
 
@@ -138,14 +136,14 @@ def motor_callback(method, url):
         return "nothing\n"
 
     try:
-        motors: List[LargeMotor] = []
+        motors = []
         for port, minus, percent in instructions:
             motor = run_motor(port, minus, percent)
             motors.append(motor)
 
         for motor in motors:
             motor.wait_until_not_moving(1000)
-    except _:
+    except Exception as e:
         return "error\n"
 
     return "success\n"
