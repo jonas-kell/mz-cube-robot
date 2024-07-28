@@ -6,6 +6,7 @@ from threading import Condition
 from http import server
 import re
 import requests
+from pprint import pprint
 
 PAGE = """\
 <html>
@@ -136,7 +137,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             if ev3count > 0:
                 print(f"Forwarding request {ev3URL} to ev3")
                 response = requests.get(ev3URL, timeout=2)
-                print("asdad", response.raw)
+                pprint(vars(response.raw))
+
                 state = response.text
 
             # forward to nxt
