@@ -181,7 +181,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                                         break
                                     NXTbrick.message_read(2, 0, True)
                                     break
-                                except nxt.error.DirectProtocolError:
+                                except nxt.error.DirectProtocolError as err:
+                                    print(err)
                                     pass
 
                             if state != "error":
