@@ -157,16 +157,16 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                     if port == "E" or port == "F":
                         print(f"Forwarding request {port, minus, percent} to nxt")
                         if NXTbrick:
-                            nxtPort = nxt.motor.Port.A
+                            nxtPort = "A"  # = E
                             if port == "F":
-                                nxtPort = nxt.motor.Port.B
+                                nxtPort = "B"  # = F
 
-                            mymotor = NXTbrick.get_motor(nxtPort)
-                            nxt_scaling = 300  # the motor overshoots a quite bit when putting 260, attempt to correct this here
-                            mymotor.turn(
-                                -128 if minus else 127,
-                                int(nxt_scaling * percent / 100),
-                                timeout=2,
+                            NXTbrick.message_write(1, nxtPort.encode("utf-8"))
+                            NXTbrick.message_write(
+                                1,
+                                (int(percent / 100 * 360)).to_bytes(
+                                    4, "little", signed=True
+                                ),
                             )
 
                             if state != "error":
