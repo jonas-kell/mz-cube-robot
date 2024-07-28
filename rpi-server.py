@@ -163,7 +163,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                             mymotor = NXTbrick.get_motor(nxtPort)
                             nxt_scaling = 345  # the motor overshoots a quite bit when putting 260, attempt to correct this here
                             mymotor.turn(
-                                -127 if minus else 128,
+                                -128 if minus else 127,
                                 int(nxt_scaling * percent / 100),
                                 timeout=2,
                             )
