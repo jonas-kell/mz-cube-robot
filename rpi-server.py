@@ -166,11 +166,14 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                             NXTbrick.message_write(1, nxtPort.encode("utf-8"))
                             # for finished check
                             NXTbrick.message_write(2, nxtPort.encode("utf-8"))
+                            offset = 10
+                            # for breaking it works better if 10 degree less for all
+                            degree = (percent / 100 * 360) - offset
                             NXTbrick.message_write(
                                 1,
-                                (
-                                    int((-1 if minus else 1) * percent / 100 * 360)
-                                ).to_bytes(4, "little", signed=True),
+                                (int((-1 if minus else 1) * degree)).to_bytes(
+                                    4, "little", signed=True
+                                ),
                             )
 
                             # wait until turn finished (not possible to paralellize)
