@@ -168,9 +168,9 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                             NXTbrick.message_write(2, nxtPort.encode("utf-8"))
                             NXTbrick.message_write(
                                 1,
-                                (int(percent / 100 * 360)).to_bytes(
-                                    4, "little", signed=True
-                                ),
+                                (
+                                    int((-1 if minus else 1) * percent / 100 * 360)
+                                ).to_bytes(4, "little", signed=True),
                             )
 
                             # wait until turn finished (not possible to paralellize)
