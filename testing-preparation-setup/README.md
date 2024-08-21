@@ -13,6 +13,7 @@ pip install --upgrade python-ev3dev2
 pip install --upgrade nxt-python
 pip install --upgrade pyusb
 pip install --upgrade ev3_dc # not working, just test
+pip install --upgrade opencv-python
 
 
 ------ to deactivate
