@@ -1,5 +1,6 @@
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Literal
 import numpy as np
+import colorsys
 
 codeDetectionLocations: Dict[
     int,
@@ -41,5 +42,36 @@ def averageColor(
     return (r, g, b)
 
 
-def colorToString(col: Tuple[int, int, int]) -> str:
-    return f"{col[0]:.0f}, {col[1]:.0f}, {col[2]:.0f}"
+def colorToString(
+    col: Tuple[int, int, int]
+) -> Literal["red", "green", "blue", "yellow", "orange", "white"]:
+    r, g, b = col
+
+    rprime = r / 255.0
+    gprime = g / 255.0
+    bprime = b / 255.0
+
+    h, l, s = colorsys.rgb_to_hls(rprime, gprime, bprime)
+
+    h, l, s = h * 360, l * 100, s * 100
+
+    if l > 70:
+        return "white"
+
+    colors = {
+        "red": 0,
+        "green": 100,
+        "yellow": 60,
+        "orange": 20,
+        "blue": 250,
+    }
+
+    current = "red"
+    currentDistance = 700
+    for comparisonColor, comparisonHue in colors.items():
+        newDist = min(abs(comparisonHue - h), abs(abs(comparisonHue - h) - 360))
+        if newDist < currentDistance:
+            currentDistance = newDist
+            current = comparisonColor
+
+    return current
