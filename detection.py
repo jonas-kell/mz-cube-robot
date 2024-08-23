@@ -3,6 +3,7 @@ from typing import Literal
 import cv2
 import urllib3
 import numpy as np
+from time import sleep
 
 url = "http://192.168.1.1/stream.mjpg"
 
@@ -55,22 +56,26 @@ def move(
         )
 
 
+def readAverageColor(x1: int, y1: int, x2: int, y2: int, frame):
+    print(frame)
+
+
 stream = MJPEGStream()
 
 frame = stream.get_frame()
 if frame is not None:
-    cv2.imshow("Single Frame", frame)
-    cv2.waitKey(300)
+    readAverageColor(frame)
 
 move("A", True, "25")
-move("B", True, "25")
-move("C", True, "25")
-move("D", True, "25")
+# move("B", True, "25")
+# move("C", True, "25")
+# move("D", True, "25")
 
-frame = stream.get_frame()
-if frame is not None:
-    cv2.imshow("Single Frame 2", frame)
-    cv2.waitKey(300)
+sleep(0.5)
 
-move("E", False, "25")
-move("F", False, "25")
+# frame = stream.get_frame()
+# if frame is not None:
+#     cv2.imshow("Single Frame 2", frame)
+#     cv2.waitKey(300)
+# move("E", False, "25")
+# move("F", False, "25")

@@ -1,6 +1,28 @@
 import cv2
 import urllib3
 import numpy as np
+from locations import codeDetectionLocations, colorToString, averageColor
+
+
+def drawOnImage(
+    image,
+    x1: int,
+    y1: int,
+    x2: int,
+    y2: int,
+    text: str,
+):
+    cv2.rectangle(image, (x1, y1), (x2, y2), (255, 0, 0), 2)
+    cv2.putText(
+        image,
+        text,
+        (x1 + 10, y2 - 10),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.3,
+        (0, 0, 0),
+        1,
+    )
+
 
 url = "http://192.168.1.1/stream.mjpg"
 http = urllib3.PoolManager()
@@ -20,6 +42,16 @@ try:
 
             # Note: The cv2.CV_LOAD_IMAGE_COLOR flag is not needed in newer OpenCV versions
             i = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
+            for index in codeDetectionLocations:
+                (x1, y1, x2, y2) = codeDetectionLocations.get(index)
+                drawOnImage(
+                    i,
+                    x1,
+                    y1,
+                    x2,
+                    y2,
+                    colorToString(averageColor(i, x1, y1, x2, y2)),
+                )
             cv2.imshow("i", i)
 
             if cv2.waitKey(1) == 27:
