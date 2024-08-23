@@ -10,6 +10,7 @@ def drawOnImage(
     y1: int,
     x2: int,
     y2: int,
+    index: str,
     text: str,
 ):
     cv2.rectangle(image, (x1, y1), (x2, y2), (255, 0, 0), 2)
@@ -17,6 +18,15 @@ def drawOnImage(
         image,
         text,
         (x1 + 10, y2 - 10),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.3,
+        (0, 0, 0),
+        1,
+    )
+    cv2.putText(
+        image,
+        index,
+        (x1 + 10, y2 - 20),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.3,
         (0, 0, 0),
@@ -50,6 +60,7 @@ try:
                     y1,
                     x2,
                     y2,
+                    str(index),
                     colorToString(averageColor(i, x1, y1, x2, y2)),
                 )
             cv2.imshow("i", i)
