@@ -147,7 +147,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             if state != "error":
                 try:
                     # forward to ev3 server 2
-                    ev3URL = "http://10.42.0.4/"
+                    ev3URL = "http://10.42.1.3/"
                     ev3count = 0
                     for port, minus, percent in instructions:
                         if port == "E" or port == "F":
