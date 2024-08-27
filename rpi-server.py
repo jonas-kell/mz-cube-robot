@@ -6,30 +6,18 @@ from threading import Condition
 from http import server
 import re
 import requests
-import nxt.locator
-import nxt.motor
-import nxt.error
-from time import time
 
 PAGE = """\
 <html>
 <head>
-<title>Raspberry Pi Camera</title>
+<title>Cube-Solver-Camera</title>
 </head>
 <body>
-<center><h1>Raspberry Pi Camera</h1></center>
+<center><h1>Cube-Solver-Camera</h1></center>
 <center><img src="stream.mjpg" width="640" height="480"></center>
 </body>
 </html>
 """
-
-NXTbrick = None
-
-NXTbrick = nxt.locator.find()
-if NXTbrick:
-    print("NXT found")
-else:
-    print("NXT not found")
 
 
 class StreamingOutput(object):
@@ -140,7 +128,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             ## control motors
 
             try:
-                # forward to ev3 server
+                # forward to ev3 server 1
                 ev3URL = "http://10.42.0.3/"
                 ev3count = 0
                 for port, minus, percent in instructions:
@@ -152,55 +140,32 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                     response = requests.get(ev3URL, timeout=2)
                     response.raise_for_status()
                     state = response.text
-
-                # forward to nxt
-                # https://ni.srht.site/nxt-python/latest/api/motor.html
-                for port, minus, percent in instructions:
-                    if port == "E" or port == "F":
-                        print(f"Forwarding request {port, minus, percent} to nxt")
-                        if NXTbrick:
-                            nxtPort = "A"  # = E
-                            if port == "F":
-                                nxtPort = "B"  # = F
-
-                            NXTbrick.message_write(1, nxtPort.encode("utf-8"))
-                            # for finished check
-                            NXTbrick.message_write(2, nxtPort.encode("utf-8"))
-                            offset = 10
-                            # for breaking it works better if 10 degree less for all
-                            degree = (percent / 100 * 360) - offset
-                            NXTbrick.message_write(
-                                1,
-                                (int((-1 if minus else 1) * degree)).to_bytes(
-                                    4, "little", signed=True
-                                ),
-                            )
-
-                            # wait until turn finished (not possible to paralellize)
-                            startTime = time()
-                            while True:
-                                try:
-                                    if time() - startTime > 2:
-                                        # timeout
-                                        print("NXT motor move timeout")
-                                        state = "error\n"
-                                        break
-                                    NXTbrick.message_read(
-                                        2, 0, False
-                                    )  # message should be there, as long as brick is moving the motor
-                                except nxt.error.DirectProtocolError:
-                                    print("NXT motor movement confimed working")
-                                    break  # no more message to be read, meaning the check message was removed and it is done
-
-                            if state != "error\n":
-                                state = "success\n"
-                        else:
-                            print("NXT not there, could not forward")
-                            state = "error\n"
-
             except Exception as e:
                 print(e)
                 state = "error\n"
+
+            if state != "error":
+                try:
+                    # forward to ev3 server 2
+                    ev3URL = "http://10.42.0.4/"
+                    ev3count = 0
+                    for port, minus, percent in instructions:
+                        if port == "E" or port == "F":
+                            if port == "E":
+                                port = "A"
+                            if port == "F":
+                                port = "B"
+
+                            ev3URL += f"{port}{'-' if minus else ''}{percent}&"
+                            ev3count += 1
+                    if ev3count > 0:
+                        print(f"Forwarding request {ev3URL} to ev3")
+                        response = requests.get(ev3URL, timeout=2)
+                        response.raise_for_status()
+                        state = response.text
+                except Exception as e:
+                    print(e)
+                    state = "error\n"
 
             ## control motors
 
@@ -233,7 +198,3 @@ with picamera.PiCamera(resolution="640x480", framerate=30) as camera:
         server.serve_forever()
     finally:
         camera.stop_recording()
-
-        if NXTbrick:
-            print("Close NXT Connection")
-            NXTbrick.close()
