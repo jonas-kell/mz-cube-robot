@@ -15,6 +15,38 @@ PAGE = """\
 <body>
 <center><h1>Cube-Solver-Camera</h1></center>
 <center><img src="stream.mjpg" width="640" height="480"></center>
+<center>
+    <p>
+        <a href="/A25&amp;" target="_blank" onclick="event.preventDefault(); fetch(this.href).then(response => response.text()).then(data => console.log(data)).catch(error => console.error('Error:', error));">
+            Rotate A ( /A25&amp; )
+        </a>
+    </p>
+    <p>
+        <a href="/B25&amp;" target="_blank" onclick="event.preventDefault(); fetch(this.href).then(response => response.text()).then(data => console.log(data)).catch(error => console.error('Error:', error));">
+            Rotate B ( /B25&amp; )
+        </a>
+    </p>
+    <p>
+        <a href="/C25&amp;" target="_blank" onclick="event.preventDefault(); fetch(this.href).then(response => response.text()).then(data => console.log(data)).catch(error => console.error('Error:', error));">
+            Rotate C ( /C25&amp; )
+        </a>
+    </p>
+    <p>
+        <a href="/D25&amp;" target="_blank" onclick="event.preventDefault(); fetch(this.href).then(response => response.text()).then(data => console.log(data)).catch(error => console.error('Error:', error));">
+            Rotate D ( /D25&amp; )
+        </a>
+    </p>
+    <p>
+        <a href="/E25&amp;" target="_blank" onclick="event.preventDefault(); fetch(this.href).then(response => response.text()).then(data => console.log(data)).catch(error => console.error('Error:', error));">
+            Rotate E ( /E25&amp; )
+        </a>
+    </p>
+    <p>
+        <a href="/F25&amp;" target="_blank" onclick="event.preventDefault(); fetch(this.href).then(response => response.text()).then(data => console.log(data)).catch(error => console.error('Error:', error));">
+            Rotate F ( /F25&amp; )
+        </a>
+    </p>
+</center>
 </body>
 </html>
 """
