@@ -3,8 +3,9 @@ import urllib3
 import numpy as np
 from time import sleep
 from move import move
+from url import url
 
-url = "http://192.168.1.1/stream.mjpg"
+stream_url = f"{url}/stream.mjpg"
 
 
 class MJPEGStream:
@@ -13,7 +14,7 @@ class MJPEGStream:
 
     def get_frame(self):
         self.http = urllib3.PoolManager()
-        self.response = self.http.request("GET", url, preload_content=False)
+        self.response = self.http.request("GET", stream_url, preload_content=False)
         self.bytes = b""
         try:
             while True:

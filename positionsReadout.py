@@ -2,6 +2,7 @@ import cv2
 import urllib3
 import numpy as np
 from locations import codeDetectionLocations, colorToString, averageColor
+from url import url
 
 
 def drawOnImage(
@@ -34,10 +35,10 @@ def drawOnImage(
     )
 
 
-url = "http://192.168.1.1/stream.mjpg"
+stream_url = f"{url}/stream.mjpg"
 http = urllib3.PoolManager()
 try:
-    response = http.request("GET", url, preload_content=False)
+    response = http.request("GET", stream_url, preload_content=False)
     stream = response.stream(1024)
 
     bytes = b""

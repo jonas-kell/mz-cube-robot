@@ -1,5 +1,6 @@
 import requests
 from typing import Literal
+from url import url
 
 
 def move(
@@ -11,11 +12,9 @@ def move(
     deg2: Literal["25", "50", "75", "100"] = "25",
 ):
     if motor2 == "N":
-        requests.get(
-            f"http://192.168.1.1/{motor}{'-' if minus else ''}{deg}&", timeout=2
-        )
+        requests.get(f"{url}/{motor}{'-' if minus else ''}{deg}&", timeout=2)
     else:
         requests.get(
-            f"http://192.168.1.1/{motor}{'-' if minus else ''}{deg}&{motor2}{'-' if minus2 else ''}{deg2}&",
+            f"{url}/{motor}{'-' if minus else ''}{deg}&{motor2}{'-' if minus2 else ''}{deg2}&",
             timeout=2,
         )
