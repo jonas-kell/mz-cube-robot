@@ -222,6 +222,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 with picamera.PiCamera(resolution="640x480", framerate=30) as camera:
     output = StreamingOutput()
     camera.rotation = 180
+    camera.shutter_speed = 10000
     camera.start_recording(output, format="mjpeg")
     try:
         address = ("0.0.0.0", 80)
