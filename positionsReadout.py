@@ -35,6 +35,9 @@ def drawOnImage(
     )
 
 
+count = 1
+averager = [0, 0, 0]
+
 stream_url = f"{url}/stream.mjpg"
 http = urllib3.PoolManager()
 try:
@@ -55,6 +58,17 @@ try:
             i = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
             for index in codeDetectionLocations:
                 (x1, y1, x2, y2) = codeDetectionLocations.get(index)
+                average_color = averageColor(i, x1, y1, x2, y2)
+                color_str = colorToString(average_color)
+
+                sample = []  # sample colors here
+                if index in sample:
+                    averager[0] += int(average_color[0])
+                    averager[1] += int(average_color[1])
+                    averager[2] += int(average_color[2])
+                    count += 1
+                    print(averager[0] / count, averager[1] / count, averager[2] / count)
+
                 drawOnImage(
                     i,
                     x1,
@@ -62,7 +76,7 @@ try:
                     x2,
                     y2,
                     str(index),
-                    colorToString(averageColor(i, x1, y1, x2, y2)),
+                    color_str,
                 )
             cv2.imshow("i", i)
 

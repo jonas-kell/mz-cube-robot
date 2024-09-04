@@ -54,12 +54,12 @@ def euclidean_distance_lab(color1_lab, color2_lab):
 
 
 colors = {
-    "red": [255, 0, 0],
-    "green": [0, 255, 0],
-    "blue": [0, 0, 255],
-    "white": [255, 255, 255],
-    "yellow": [255, 255, 30],
-    "orange": [255, 165, 47],
+    "red": [210, 23, 38],
+    "orange": [210, 132, 84],
+    "green": [13, 166, 49],
+    "blue": [0, 20, 173],
+    "white": [121, 161, 223],
+    "yellow": [207, 224, 63],
 }
 colors_lab = {name: rgb_to_lab(r, g, b) for name, (r, g, b) in colors.items()}
 
