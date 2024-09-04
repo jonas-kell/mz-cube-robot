@@ -33,12 +33,12 @@ faceOffsetOrder = [
 ]
 
 faceToMotorDict = {
-    "U": ("E", True),
+    "U": ("E", False),
     "R": ("A", True),
     "F": ("D", True),
-    "D": ("F", False),
+    "D": ("F", True),
     "L": ("B", True),
-    "B": ("D", True),
+    "B": ("C", True),
 }
 
 
@@ -69,7 +69,7 @@ startExecSolve = time()
 
 for step in solutionSplit:
     face = step[0]
-    steps = step[1]
+    steps = int(step[1])
 
     motor, inv = faceToMotorDict[face]
 

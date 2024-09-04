@@ -17,7 +17,7 @@ def avgColorFromLocation(
     global frame
 
     if newFrame or frame is None:
-        sleep(0.5)
+        sleep(0.6)
         frame = stream.get_frame()
         if frame is None:
             raise Exception("Could not read frame")
