@@ -1,7 +1,8 @@
 import cv2
 import urllib3
 import numpy as np
-from locations import codeDetectionLocations, colorToString, averageColor
+from locations import codeDetectionLocations, averageColor
+from colors import colorToString
 from url import url
 
 
