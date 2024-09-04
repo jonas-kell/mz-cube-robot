@@ -80,4 +80,13 @@ def colorToString(
             currentDistance = newDist
             current = comparisonColorName
 
+    # method relatively bad in discening orange and red. Therefore do extra comparison, that is basically a hsl comparison
+    # scale by the lightness, given by red channel (because the shade yould be either lighter or darker)
+    # information red/orange then is basically contained in the green channel
+    if current == "red" or current == "orange":
+        if 120 / r * g < 28:  # empirical
+            current = "red"
+        else:
+            current = "orange"
+
     return current
