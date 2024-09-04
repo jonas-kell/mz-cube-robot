@@ -14,6 +14,7 @@ pip install --upgrade python-ev3dev2
 pip install --upgrade pyusb
 pip install --upgrade opencv-python
 pip install --upgrade scikit-image
+pip install --upgrade RubikTwoPhase
 
 ------ to deactivate
 deactivate
