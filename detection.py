@@ -1,62 +1,31 @@
-import cv2
-import urllib3
-import numpy as np
+from typing import Literal
 from time import sleep
 from move import move
-from url import url
+from streamClient import CubeStream
+from locations import averageColor, codeDetectionLocations
+from colors import colorToString
 
-stream_url = f"{url}/stream.mjpg"
+stream = CubeStream()
 
-
-class MJPEGStream:
-    def __init__(self):
-        pass
-
-    def get_frame(self):
-        self.http = urllib3.PoolManager()
-        self.response = self.http.request("GET", stream_url, preload_content=False)
-        self.bytes = b""
-        try:
-            while True:
-                chunk = self.response.read(1024)
-                self.bytes += chunk
-                a = self.bytes.find(b"\xff\xd8")
-                b = self.bytes.find(b"\xff\xd9")
-
-                if a != -1 and b != -1:
-                    jpg = self.bytes[a : b + 2]
-                    self.bytes = self.bytes[b + 2 :]
-                    frm = cv2.imdecode(
-                        np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR
-                    )
-                    self.response.release_conn()
-                    return frm  # Return the captured frame
-
-        except Exception as e:
-            print(f"Error: {e}")
-            return None  # Return None if there's an error
+frame = None
 
 
-def readAverageColor(x1: int, y1: int, x2: int, y2: int, frame):
-    print(frame)
+def avgColorFromLocation(
+    index: int, newFrame=True
+) -> Literal["red", "green", "blue", "yellow", "orange", "white"]:
+    global frame
+
+    if newFrame or frame is None:
+        sleep(0.5)
+        frame = stream.get_frame()
+        if frame is None:
+            raise Exception("Could not read frame")
+
+    x1, y1, x2, y2 = codeDetectionLocations.get(index)
+
+    return colorToString(averageColor(frame, x1, y1, x2, y2))
 
 
-stream = MJPEGStream()
-
-frame = stream.get_frame()
-if frame is not None:
-    readAverageColor(frame)
-
+print(avgColorFromLocation(0))
 move("A", True, "25")
-# move("B", True, "25")
-# move("C", True, "25")
-# move("D", True, "25")
-
-sleep(0.5)
-
-# frame = stream.get_frame()
-# if frame is not None:
-#     cv2.imshow("Single Frame 2", frame)
-#     cv2.waitKey(300)
-# move("E", False, "25")
-# move("F", False, "25")
+print(avgColorFromLocation(0))
