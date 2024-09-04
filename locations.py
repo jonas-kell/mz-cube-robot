@@ -84,7 +84,13 @@ def colorToString(
     # scale by the lightness, given by red channel (because the shade yould be either lighter or darker)
     # information red/orange then is basically contained in the green channel
     if current == "red" or current == "orange":
-        if 120 / r * g < 30:  # empirical
+        lightness_scaler = (r - 130) / (220 - 130)  # approximately 0-1
+        region = 0.35  # defines the "intensity" how strongly the lighting factor is taken into account
+        lightness_score = (
+            region + (1 - 2 * region) * lightness_scaler
+        )  # definitely 0-100 with extremes not that bad
+        green_score = g / lightness_score
+        if green_score < 100:  # empirical
             current = "red"
         else:
             current = "orange"
