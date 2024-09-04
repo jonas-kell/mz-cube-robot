@@ -59,7 +59,7 @@ print(f"Cubestring generated from detection: '{cubestring}'")
 
 startSolve = time()
 
-sol = sv.solve(cubestring, 19, 2)
+sol = sv.solve(cubestring, 16, 3)
 
 print(f"solving took {time() - startSolve:.2f}s: '{sol}'")
 
