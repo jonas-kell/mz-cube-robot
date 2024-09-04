@@ -84,7 +84,7 @@ def colorToString(
     # scale by the lightness, given by red channel (because the shade yould be either lighter or darker)
     # information red/orange then is basically contained in the green channel
     if current == "red" or current == "orange":
-        if 120 / r * g < 28:  # empirical
+        if 120 / r * g < 30:  # empirical
             current = "red"
         else:
             current = "orange"
