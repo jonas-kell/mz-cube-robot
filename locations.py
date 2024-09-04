@@ -1,6 +1,7 @@
 from typing import Dict, Tuple, Literal
 import numpy as np
 import colorsys
+from skimage import color
 
 codeDetectionLocations: Dict[
     int,
@@ -42,36 +43,41 @@ def averageColor(
     return (r, g, b)
 
 
+def rgb_to_lab(r: int, g: int, b: int):
+    rgb_normalized = np.array([r, g, b]) / 255.0
+    lab = color.rgb2lab(rgb_normalized)
+    return lab[0:3]  # l, a, b
+
+
+def euclidean_distance_lab(color1_lab, color2_lab):
+    return np.linalg.norm(color1_lab - color2_lab)
+
+
+colors = {
+    "red": [255, 0, 0],
+    "green": [0, 255, 0],
+    "blue": [0, 0, 255],
+    "white": [255, 255, 255],
+    "yellow": [255, 255, 30],
+    "orange": [255, 165, 47],
+}
+colors_lab = {name: rgb_to_lab(r, g, b) for name, (r, g, b) in colors.items()}
+
+
+# https://colorizer.org/
 def colorToString(
     col: Tuple[int, int, int]
 ) -> Literal["red", "green", "blue", "yellow", "orange", "white"]:
     r, g, b = col
 
-    rprime = r / 255.0
-    gprime = g / 255.0
-    bprime = b / 255.0
-
-    h, l, s = colorsys.rgb_to_hls(rprime, gprime, bprime)
-
-    h, l, s = h * 360, l * 100, s * 100
-
-    if l > 70:
-        return "white"
-
-    colors = {
-        "red": 0,
-        "green": 100,
-        "yellow": 60,
-        "orange": 20,
-        "blue": 250,
-    }
+    input_lab = rgb_to_lab(r, g, b)
 
     current = "red"
-    currentDistance = 700
-    for comparisonColor, comparisonHue in colors.items():
-        newDist = min(abs(comparisonHue - h), abs(abs(comparisonHue - h) - 360))
+    currentDistance = euclidean_distance_lab(input_lab, colors_lab["red"])
+    for comparisonColorName, comparisonColorLab in colors_lab.items():
+        newDist = euclidean_distance_lab(comparisonColorLab, input_lab)
         if newDist < currentDistance:
             currentDistance = newDist
-            current = comparisonColor
+            current = comparisonColorName
 
     return current
