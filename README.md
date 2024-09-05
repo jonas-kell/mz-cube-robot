@@ -13,48 +13,37 @@ https://github.com/user-attachments/assets/eca1f05e-32c8-4683-82ac-e17c1d3a330d
     </tr>
 </table>
   
-Installation:
+## What is this
 
-Python extension,
+This is a Project, undertaken first at the `Mathecamp` of Augsburg University 2024.
+The idea is to
 
-Ev3 extension,
-https://marketplace.visualstudio.com/items?itemName=ev3dev.ev3dev-browser
+-   Develop a Robot from scratch, that can solve the `Rubics-Cube` without external inputs
+-   Make this experience as teachable as possible for young students, that might or might not have been working with robotics/coding yet
 
-```cmd
-python3 -m venv .venv
-source .venv/bin/activate
+## How is this realized
 
-pip install --upgrade pip
-pip install --upgrade python-ev3dev2
-pip install --upgrade pyusb
-pip install --upgrade opencv-python
-pip install --upgrade scikit-image
-pip install --upgrade RubikTwoPhase
+A first version was made to work in September 2024. Videos of the Rsults can be seen above ([or HERE](https://github.com/user-attachments/assets/eca1f05e-32c8-4683-82ac-e17c1d3a330d)).
 
------- to deactivate
-deactivate
-```
+The code that is needed to get this working is fully contained in this repository.
 
-SSH onto pi: default user: `pi`, pw: `pi`
-SSH onto ev3: default user: `robot`, pw: `maker`
+The Hardware-Setup however is NOT contained here. Though the video can be taken as reference.
 
-```cmd
-ssh -o PasswordAuthentication=yes -o PreferredAuthentications=keyboard-interactive,password -o PubkeyAuthentication=no pi@192.168.1.1
+There is a list of materials and how to do the basic setup [here](/setup-configuration/bill-of-materials.md).
 
-    ssh -o PasswordAuthentication=yes -o PreferredAuthentications=keyboard-interactive,password -o PubkeyAuthentication=no robot@10.42.0.3
+Basically, he robot is comprised of a `Raspberry-Pi Pico W` with a camera module.
+It provides the stream of the camera view over a simple webserver.
+It also relays motor commands to two `Lego Ev3` bricks, that control in total 6 motors, one for each face of the cube.
 
-        sudo python3 ~/mz-cube-robot/ev3-server.py # enter pw
-        nohup sudo python3 ~/mz-cube-robot/ev3-server.py &
+The `Raspberry-Pi Pico W` has its Wireless capabilities configured as an access point.
+One can then connect to that access point and run code one ones own Laptop that processes the camera stream and issues the rotation commands, until the cube is solved.
 
-        exit
+## What to find in this repository
 
-    ssh -o PasswordAuthentication=yes -o PreferredAuthentications=keyboard-interactive,password -o PubkeyAuthentication=no robot@10.42.1.3
-
-        sudo python3 ~/mz-cube-robot/ev3-server.py # enter pw
-        nohup sudo python3 ~/mz-cube-robot/ev3-server.py &
-
-        exit
-
-    sudo python3 ~/mz-cube-robot/rpi-server.py
-    nohup sudo python3 ~/mz-cube-robot/rpi-server.py &
-```
+-   [Bill of Materials](setup-configuration/bill-of-materials.md)
+-   [Hardware configuration](setup-configuration/hardware-configuration.md)
+-   [Installation instructions](setup-configuration/installation-instructions.md)
+-   [Startup instructions for when everything is installed](setup-configuration/startup.md)
+-   [Server code to run on the Raspberry Pi](rpi-server.py)
+-   [Server code to run on the EV3s](ev3-server.py)
+-   [A possible set of processing and issuing functions](solving-example-code/)
