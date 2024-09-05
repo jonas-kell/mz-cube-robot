@@ -12,7 +12,7 @@ How to setup the hardware:
     -   [Pinout of the raspberry pi zero](https://pinout.xyz/pinout/io_pi_zero)
         -   I used 2,4 for one side and 6,14 for the other (check polarity of LED)
 -   Flash the OS to one of the micro SD-Cards
-    -   [Tutorial, to follow](https://randomnerdtutorials.com/video-streaming-with-raspberry-pi-camera/)
+    -   [Tutorial, to follow for Camera Setup](https://www.conrad.de/de/ratgeber/schule-unterricht/raspberry-pi/ueberwachungskamera-mit-raspberry-pi.html)
     -   [Flashing Program: Raspberry Pi Imager](https://www.raspberrypi.com/software/)
         -   When Flashing the os, make sure to `enable ssh` and set password to `pi`
         -   [Which OS?](https://www.raspberrypi.com/software/operating-systems/)

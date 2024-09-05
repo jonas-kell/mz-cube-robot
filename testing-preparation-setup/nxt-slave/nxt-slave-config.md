@@ -4,7 +4,7 @@
 
 This was scrapped due to not solvable motor precision errors when using `Lego NXT 2.0`.
 
-```cmd
+```shell
 # required installations on the raspberry pi zero w to get the nxt-communication package to work
 pip install --upgrade pip
 pip install --upgrade nxt-python
