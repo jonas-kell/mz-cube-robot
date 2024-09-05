@@ -1,4 +1,4 @@
-# Mathecamp-Cube-Solving-Robot
+# Mathezirkel-Cube-Solving-Robot
 
 https://github.com/user-attachments/assets/eca1f05e-32c8-4683-82ac-e17c1d3a330d
 
