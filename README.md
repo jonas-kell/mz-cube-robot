@@ -2,6 +2,7 @@
     <tr>
         <td style="text-align: center; vertical-align: middle;">
             <video src='files/VideoDemonstration.mp4' controls loop autoplay style="max-width: 45vw; max-height: 80vh;"></video>
+            https://github.com/jonas-kell/mz-cube-robot/blob/master/files/VideoDemonstration.mp4
         </td>
         <td style="text-align: center; vertical-align: middle;">
             <img src="files/CameraViewLocations.png" style="max-width: 45vw; max-height: 80vh; width:95%;">
