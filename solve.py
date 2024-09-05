@@ -67,7 +67,15 @@ solutionSplit = sol.split(" ")[:-1]
 
 startExecSolve = time()
 
-for step in solutionSplit:
+delayedMotor = "N"
+delayedPercent = 25
+delayedInv = False
+for index, step in enumerate(solutionSplit):
+
+    nextFace = None
+    if index + 1 < len(solutionSplit):
+        nextFace = solutionSplit[index + 1][0]
+
     face = step[0]
     steps = int(step[1])
 
@@ -79,6 +87,27 @@ for step in solutionSplit:
     if steps == 3:
         inv = not inv
 
-    move(motor, inv, percent)
+    if (nextFace, face) in [
+        ("U", "D"),
+        ("D", "U"),
+        ("L", "R"),
+        ("R", "L"),
+        ("B", "F"),
+        ("F", "B"),
+    ]:
+        print("Combine-Move")
+        delayedMotor = motor
+        delayedPercent = percent
+        delayedInv = inv
+    else:
+        move(
+            motor,
+            inv,
+            percent,
+            delayedMotor,  # when prev was a Combine-Move this directly executes the double move
+            delayedInv,
+            delayedPercent,
+        )
+        delayedMotor = "N"  # reset that there is no second motor moved
 
 print(f"executing solution took {time() - startExecSolve:.2f}s")
