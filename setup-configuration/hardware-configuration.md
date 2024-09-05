@@ -39,6 +39,14 @@ How to setup the hardware:
     -   Your freedom of design choice.
         -   Should connect one motor to every face of the cube
         -   Motors should spin freely, the cube nicely in the center
+            -   Probably best, to have opposite face motors on the same ev3, as they turn together posssibly
+            -   I chose the configuration (See directions on picture below):
+                -   A - Blue - Motor Port A, EV3 1
+                -   B - Green - Motor Port B, EV3 1
+                -   C - Orange - Motor Port C, EV3 1
+                -   D - Red - Motor Port D, EV3 1
+                -   E - White - Motor Port A, EV3 2
+                -   F - Yellow - Motor Port A, EV3 2
         -   Space for the camera to view at least two sides of the cube (the more you can easily see, the easier the detection)
         -   Mount the LEDs, so that they can be powered and still illuminate the cube faces nicely
 
