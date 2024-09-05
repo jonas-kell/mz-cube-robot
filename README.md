@@ -1,8 +1,11 @@
+# Mathecamp-Cube-Solving-Robot
+
+https://github.com/user-attachments/assets/eca1f05e-32c8-4683-82ac-e17c1d3a330d
+
 <table style="width: 100%; border-collapse: collapse; border: none;">
     <tr>
         <td style="text-align: center; vertical-align: middle;">
             <video src='files/VideoDemonstration.mp4' controls loop autoplay style="max-width: 45vw; max-height: 80vh;"></video>
-            https://github.com/jonas-kell/mz-cube-robot/blob/master/files/VideoDemonstration.mp4
         </td>
         <td style="text-align: center; vertical-align: middle;">
             <img src="files/CameraViewLocations.png" style="max-width: 45vw; max-height: 80vh; width:95%;">
