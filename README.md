@@ -1,3 +1,19 @@
+<!-- <video width="720" height="1280" controls> -->
+
+<table style="width: 100%; border-collapse: collapse; border: none;">
+    <tr>
+        <td style="text-align: center; vertical-align: middle;">
+            <video style="max-width: 45vw; max-height: 80vh;" controls loop autoplay>
+                <source src="files/VideoDemonstration.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </td>
+        <td style="text-align: center; vertical-align: middle;">
+            <img src="files/CameraViewLocations.png" style="max-width: 45vw; max-height: 80vh; width:95%;">
+        </td>
+    </tr>
+</table>
+  
 Installation:
 
 Python extension,
