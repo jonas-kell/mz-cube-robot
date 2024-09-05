@@ -31,11 +31,11 @@ The Hardware-Setup however is NOT contained here. Though the video can be taken 
 
 There is a list of materials and how to do the basic setup [here](/setup-configuration/bill-of-materials.md).
 
-Basically, he robot is comprised of a `Raspberry-Pi Pico W` with a camera module.
+Basically, he robot is comprised of a `Raspberry-Pi Zero W` with a camera module.
 It provides the stream of the camera view over a simple webserver.
 It also relays motor commands to two `Lego Ev3` bricks, that control in total 6 motors, one for each face of the cube.
 
-The `Raspberry-Pi Pico W` has its Wireless capabilities configured as an access point.
+The `Raspberry-Pi Zero W` has its Wireless capabilities configured as an access point.
 One can then connect to that access point and run code one ones own Laptop that processes the camera stream and issues the rotation commands, until the cube is solved.
 
 ## What to find in this repository
