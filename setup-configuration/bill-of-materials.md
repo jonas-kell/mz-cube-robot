@@ -24,8 +24,9 @@ What is required to reproduce this setup
 -   A Rubics-Cube that can have the center caps removed ([This one probably fits the printed adapters](https://speedcubeshop.com/products/moyu-rs3-m-2020-3x3-magnetic))
 
     -   6 Adapters to connect the YOUR Rubics-Cube centers to Lego-Axles (3d-Printing required or other alternative you fancy, e.g. some hardening putty or what do I know)
+    -   [.stl File of the Adapter Model used](./../files/CubeAdapter.stl). Thanks to [@jangeiger](https://github.com/jangeiger) for designing and printing :-)
 
-        ![Printing](../files/Printing.gif)
+        ![Printing](../files/Printing.gif) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Adapter](../files/CubeAdapter.jpeg)
 
 ## Legacy/Alternatives
 
