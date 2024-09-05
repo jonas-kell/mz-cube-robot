@@ -15,7 +15,7 @@ https://github.com/user-attachments/assets/eca1f05e-32c8-4683-82ac-e17c1d3a330d
   
 ## What is this
 
-This is a Project, undertaken first at the `Mathecamp` of Augsburg University 2024.
+This is a Project, undertaken first at the `Mathecamp` of the `University of Augsburg` 2024.
 The idea is to
 
 -   Develop a Robot from scratch, that can solve the `Rubics-Cube` without external inputs
