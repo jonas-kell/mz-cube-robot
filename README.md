@@ -25,11 +25,11 @@ The idea is to
 
 A first version was made to work in September 2024. Videos of the Rsults can be seen above ([or HERE](https://github.com/user-attachments/assets/eca1f05e-32c8-4683-82ac-e17c1d3a330d)).
 
-The code that is needed to get this working is fully contained in this repository.
-
-The Hardware-Setup however is NOT contained here. Though the video can be taken as reference.
+The code and Hardware-Setup that is needed to get this working is fully contained in this repository.
 
 There is a list of materials and how to do the basic setup [here](/setup-configuration/bill-of-materials.md).
+
+A Lego-building instruction however is NOT contained here. Though the video can be taken as reference.
 
 Basically, he robot is comprised of a `Raspberry-Pi Zero W` with a camera module.
 It provides the stream of the camera view over a simple webserver.
