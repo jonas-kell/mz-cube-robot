@@ -47,3 +47,35 @@ One can then connect to that access point and run code one ones own Laptop that 
 -   [Server code to run on the Raspberry Pi](rpi-server.py)
 -   [Server code to run on the EV3s](ev3-server.py)
 -   [A possible set of processing and issuing functions](solving-example-code/)
+
+## Gallery
+
+The photos are also found at their respective locations in the sub-modules of the explanation above.
+
+<table style="width: 100%; border-collapse: collapse; border: none;">
+    <tr>
+        <td style="text-align: center; vertical-align: middle;">
+            <img src="files/RPiCabeling.jpg" style="max-width: 45vw; max-height: 80vh;">
+        </td>
+        <td style="text-align: center; vertical-align: middle;">
+            <img src="files/PowerSetupEv3.jpg" style="max-width: 45vw; max-height: 80vh;">
+        </td>
+    </tr>
+</table>
+<table style="width: 100%; border-collapse: collapse; border: none;">
+    <tr>
+        <td style="text-align: center; vertical-align: middle;">
+            <img src="files/BuildOverview.jpg" style="max-width: 90vw; max-height: 80vh;">
+        </td>
+    </tr>
+</table>
+<table style="width: 100%; border-collapse: collapse; border: none;">
+    <tr>
+        <td style="text-align: center; vertical-align: middle;">
+            <img src="files/Printing.gif" style="max-width: 55vw; max-height: 80vh;">
+        </td>
+        <td style="text-align: center; vertical-align: middle;">
+            <img src="files/CubeAdapter.jpeg" style="max-width: 35vw; max-height: 80vh;">
+        </td>
+    </tr>
+</table>
