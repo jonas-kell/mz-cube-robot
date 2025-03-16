@@ -130,6 +130,35 @@
     sudo systemctl enable hostapd
     ```
 
+-   (Optional) Set the program to autostart:
+
+    ```shell
+    sudo nano /etc/systemd/system/controlserver.service
+    ```
+
+    ```conf
+    [Unit]
+    Description=Cube solver control server
+    After=network.target
+
+    [Service]
+    User=root
+    WorkingDirectory=/home/pi/mz-cube-robot
+    ExecStart=/usr/bin/python3 /home/pi/mz-cube-robot/rpi-server.py
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+    ```shell
+    sudo systemctl daemon-reload
+    sudo systemctl enable controlserver.service
+    sudo systemctl start controlserver.service
+
+    sudo systemctl status controlserver.service
+    ```
+
 ## On the `Lego EV3`
 
 -   Program-wise everything should work out of the box, no extra installations required.
@@ -137,6 +166,35 @@
 -   Make sure, the files are copied onto the devices
     -   [ev3-server](./../ev3-server.py) onto both ev3s with the top level folder `mz-cube-robot`
 -   Further network configuration below (as it requires interaction between multiple machines)
+
+-   (Optional) Set the programs to autostart:
+
+    ```shell
+    sudo nano /etc/systemd/system/ev3server.service
+    ```
+
+    ```conf
+    [Unit]
+    Description=EV3 motor command server
+    After=network.target
+
+    [Service]
+    User=root
+    WorkingDirectory=/home/robot/mz-cube-robot
+    ExecStart=/usr/bin/python3 /home/robot/mz-cube-robot/ev3-server.py
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+    ```shell
+    sudo systemctl daemon-reload
+    sudo systemctl enable ev3server.service
+    sudo systemctl start ev3server.service
+
+    sudo systemctl status ev3server.service
+    ```
 
 ## Network configuration (between the `Lego EV3` and the `Raspberry Pi Zero W`)
 

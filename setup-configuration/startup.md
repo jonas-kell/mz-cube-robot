@@ -12,9 +12,15 @@
 
 -   Start both `Lego EV3`s FIRST. And wait until they have booted fully (takes some time)
 -   THEN start the Raspberry Pi (if started too early, the `Lego EV3`s will not get properly mapped to their network devices)
--   SSH connections (Perform the commands below in order):
-    -   SSH onto pi: default user: `pi`, pw: `pi`
-    -   SSH onto ev3 FROM THE PI (only there the USB-Connection is established): default user: `robot`, pw: `maker`
+
+-   Start the server programs:
+
+    -   If you performed the parts in the manual, that says `(Optional) Set the programs to autostart`, this should NOT be needed
+    -   Otherwise: how to start them manually
+
+        -   SSH connections (Perform the commands below in order):
+            -   SSH onto pi: default user: `pi`, pw: `pi`
+            -   SSH onto ev3 FROM THE PI (only there the USB-Connection is established): default user: `robot`, pw: `maker`
 
 ```shell
 ssh -o PasswordAuthentication=yes -o PreferredAuthentications=keyboard-interactive,password -o PubkeyAuthentication=no pi@192.168.1.1
