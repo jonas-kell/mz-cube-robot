@@ -200,12 +200,12 @@ def detection():
         or blueNumber != 9
     ):
         print(state)
-        print(whiteNumber)
-        print(yellowNumber)
-        print(redNumber)
-        print(orangeNumber)
-        print(greenNumber)
-        print(blueNumber)
+        print("white: ", whiteNumber)
+        print("yellow: ", yellowNumber)
+        print("red: ", redNumber)
+        print("orange: ", orangeNumber)
+        print("green: ", greenNumber)
+        print("blue: ", blueNumber)
         raise Exception("Not a possible cube configuration")
 
     return state
