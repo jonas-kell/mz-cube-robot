@@ -53,8 +53,10 @@ PAGE = """\
 """
 
 
-def run_command(command: str) -> str:
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+def run_command(command: str, workdir=None) -> str:
+    result = subprocess.run(
+        command, shell=True, capture_output=True, text=True, cwd=workdir
+    )
     errout = result.stderr.strip()
     print(errout)
     return result.stdout.strip() + "\n\n" + errout + "\n\nRan job script!"
@@ -219,21 +221,24 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         # solving on the pi
         elif self.path == "/scramble":
             didSomething = True
-            print("Running scambling")
+            print("Running scrambling")
             commandout = run_command(
                 "python3 /home/pi/mz-cube-robot/solving-example-code/scramble.py"
             ).encode("utf-8")
-            print("Finished scambling")
+            print("Finished scrambling")
             self.send_response(200)
             self.send_header("Content-Type", "text/html")
             self.send_header("Content-Length", len(commandout))
             self.end_headers()
             self.wfile.write(commandout)
-        elif self.path == "/solve":
+        elif (
+            self.path == "/solve"
+        ):  # !! might not have cache files first time -> takes ages
             didSomething = True
             print("Running solving")
             commandout = run_command(
-                "python3 /home/pi/mz-cube-robot/solving-example-code/solve.py"
+                "python3 /home/pi/mz-cube-robot/solving-example-code/solve.py",
+                "/home/pi/mz-cube-robot/solving-example-code/",  # so it uses the correct cached precomputed files
             ).encode("utf-8")
             print("Finished solving")
             self.send_response(200)
