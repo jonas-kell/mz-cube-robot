@@ -42,6 +42,12 @@
     ```
     sudo apt install python3-picamera
     export PATH="/home/pi/.local/lib/python3.9/site-packages:$PATH"
+
+    # to solve on the pi
+    sudo apt-get install python3-opencv
+    sudo apt-get install python3-skimage
+    sudo pip3 install --upgrade RubikTwoPhase --default-timeout=100
+
     ```
 
 -   Make the wlan interface be an Access-Point to connect to
