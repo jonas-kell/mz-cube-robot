@@ -265,6 +265,23 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header("Content-Length", len(commandout))
             self.end_headers()
             self.wfile.write(commandout)
+        elif (
+            self.path == "/calibrate"
+        ):  # !! might not have cache files first time -> takes ages
+            didSomething = True
+            print("Running calibration")
+            commandout = command_out_format(
+                run_command(
+                    "python3 /home/pi/mz-cube-robot/solving-example-code/calibrate.py",
+                    "/home/pi/mz-cube-robot/solving-example-code/",  # so it places stuff into correct folder hopefully
+                )
+            ).encode("utf-8")
+            print("Finished calibration")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Content-Length", len(commandout))
+            self.end_headers()
+            self.wfile.write(commandout)
 
         # fallback
         if not didSomething:
