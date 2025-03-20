@@ -36,8 +36,22 @@ def drawOnImage(
     )
 
 
-count = 1
-averager = [0, 0, 0]
+def annotateImage(i):
+    for index in codeDetectionLocations:
+        (x1, y1, x2, y2) = codeDetectionLocations.get(index)
+        average_color = averageColor(i, x1, y1, x2, y2)
+        color_str = colorToString(average_color)
+
+        drawOnImage(
+            i,
+            x1,
+            y1,
+            x2,
+            y2,
+            str(index),
+            color_str,
+        )
+
 
 stream_url = f"{url}/stream.mjpg"
 http = urllib3.PoolManager()
@@ -57,28 +71,7 @@ try:
 
             # Note: The cv2.CV_LOAD_IMAGE_COLOR flag is not needed in newer OpenCV versions
             i = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
-            for index in codeDetectionLocations:
-                (x1, y1, x2, y2) = codeDetectionLocations.get(index)
-                average_color = averageColor(i, x1, y1, x2, y2)
-                color_str = colorToString(average_color)
-
-                sample = []  # sample colors here
-                if index in sample:
-                    averager[0] += int(average_color[0])
-                    averager[1] += int(average_color[1])
-                    averager[2] += int(average_color[2])
-                    count += 1
-                    print(averager[0] / count, averager[1] / count, averager[2] / count)
-
-                drawOnImage(
-                    i,
-                    x1,
-                    y1,
-                    x2,
-                    y2,
-                    str(index),
-                    color_str,
-                )
+            annotateImage(i)
             cv2.imshow("i", i)
 
             if cv2.waitKey(1) == 27:
