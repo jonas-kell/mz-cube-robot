@@ -55,6 +55,7 @@ PAGE = """\
 
 def run_command(command: str) -> str:
     result = subprocess.run(command, shell=True, capture_output=True, text=True)
+    print(result.stderr.strip())  # print what went wrong
     return result.stdout.strip()
 
 
