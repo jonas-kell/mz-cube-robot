@@ -60,7 +60,7 @@ def command_out_format(outstuff: str):
     <title>Cube-Solver-Command-Output</title>
     </head>
     <body>
-    <div sytle="white-space: pre;">
+    <div style="white-space: pre;">
     {outstuff}
     </div>
     </body>
