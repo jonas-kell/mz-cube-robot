@@ -1,6 +1,7 @@
 from typing import Tuple, Literal
 import numpy as np
 from skimage import color
+from calibrate import load_array
 
 
 def rgb_to_lab(r: int, g: int, b: int):
@@ -26,7 +27,7 @@ colors_lab = {name: rgb_to_lab(r, g, b) for name, (r, g, b) in colors.items()}
 
 # https://colorizer.org/
 def colorToString(
-    col: Tuple[int, int, int]
+    col: Tuple[int, int, int],
 ) -> Literal["red", "green", "blue", "yellow", "orange", "white"]:
     r, g, b = col
 
@@ -56,3 +57,43 @@ def colorToString(
             current = "orange"
 
     return current
+
+
+def colorToStringCalibrated(
+    col: Tuple[int, int, int],
+    imageIndex,
+) -> Literal["red", "green", "blue", "yellow", "orange", "white"]:
+    try:
+        calibration_arr = load_array()
+    except FileNotFoundError:
+        print("Fallback to default color detection -> calibrate the device!")
+        return colorToString(col)
+
+    comp_cols = [
+        calibration_arr[0, imageIndex],  # white
+        calibration_arr[1, imageIndex],  # red
+        calibration_arr[2, imageIndex],  # yellow
+        calibration_arr[3, imageIndex],  # orange
+        calibration_arr[4, imageIndex],  # blue
+        calibration_arr[5, imageIndex],  # green
+    ]
+
+    winning_index = -1
+    winning_distance = 100000000000
+    for index, comp_col in enumerate(comp_cols):
+        dist = (
+            (comp_col[0] - col[0]) ** 2
+            + (comp_col[1] - col[1]) ** 2
+            + (comp_col[2] - col[2]) ** 2
+        )
+        if dist < winning_distance:
+            winning_distance = dist
+            winning_index = index
+
+    names = ["white", "red", "yellow", "orange", "blue", "green"]
+
+    return names[winning_index]
+
+
+if __name__ == "__main__":
+    print(colorToStringCalibrated((207, 0, 60), 0))

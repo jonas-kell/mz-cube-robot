@@ -4,6 +4,22 @@ from move import move
 from streamClient import CubeStream
 from locations import averageColor, codeDetectionLocations
 import numpy as np
+import os
+
+
+def save_array(arr, filename="calibrate.npy"):
+    """Saves a NumPy array to a file in the script's directory."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))  # Get script directory
+    file_path = os.path.join(script_dir, filename)
+    np.save(file_path, arr)
+
+
+def load_array(filename="calibrate.npy"):
+    """Loads a NumPy array from a file in the script's directory."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))  # Get script directory
+    file_path = os.path.join(script_dir, filename)
+    return np.load(file_path)
+
 
 stream = CubeStream()
 
@@ -366,4 +382,7 @@ def calibration():
 
 
 if __name__ == "__main__":
-    print(calibration())
+    cal = calibration()
+    save_array(cal)
+
+    print(load_array())

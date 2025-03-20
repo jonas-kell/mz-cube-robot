@@ -3,7 +3,7 @@ from time import sleep, time
 from move import move
 from streamClient import CubeStream
 from locations import averageColor, codeDetectionLocations
-from colors import colorToString
+from colors import colorToStringCalibrated
 import numpy as np
 
 stream = CubeStream()
@@ -24,7 +24,7 @@ def avgColorFromLocation(
 
     x1, y1, x2, y2 = codeDetectionLocations.get(index)
 
-    return colorToString(averageColor(frame, x1, y1, x2, y2))
+    return colorToStringCalibrated(averageColor(frame, x1, y1, x2, y2), index)
 
 
 state = np.array(
