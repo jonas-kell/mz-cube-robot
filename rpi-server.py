@@ -53,6 +53,21 @@ PAGE = """\
 """
 
 
+def command_out_format(outstuff: str):
+    return f"""\
+    <html>
+    <head>
+    <title>Cube-Solver-Command-Output</title>
+    </head>
+    <body>
+    <div sytle="white-space: pre;">
+    {outstuff}
+    </div>
+    </body>
+    </html>
+    """
+
+
 def run_command(command: str, workdir=None) -> str:
     result = subprocess.run(
         command, shell=True, capture_output=True, text=True, cwd=workdir
@@ -222,8 +237,10 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         elif self.path == "/scramble":
             didSomething = True
             print("Running scrambling")
-            commandout = run_command(
-                "python3 /home/pi/mz-cube-robot/solving-example-code/scramble.py"
+            commandout = command_out_format(
+                run_command(
+                    "python3 /home/pi/mz-cube-robot/solving-example-code/scramble.py"
+                )
             ).encode("utf-8")
             print("Finished scrambling")
             self.send_response(200)
@@ -236,9 +253,11 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         ):  # !! might not have cache files first time -> takes ages
             didSomething = True
             print("Running solving")
-            commandout = run_command(
-                "python3 /home/pi/mz-cube-robot/solving-example-code/solve.py",
-                "/home/pi/mz-cube-robot/solving-example-code/",  # so it uses the correct cached precomputed files
+            commandout = command_out_format(
+                run_command(
+                    "python3 /home/pi/mz-cube-robot/solving-example-code/solve.py",
+                    "/home/pi/mz-cube-robot/solving-example-code/",  # so it uses the correct cached precomputed files
+                )
             ).encode("utf-8")
             print("Finished solving")
             self.send_response(200)
