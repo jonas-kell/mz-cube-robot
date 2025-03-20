@@ -55,8 +55,9 @@ PAGE = """\
 
 def run_command(command: str) -> str:
     result = subprocess.run(command, shell=True, capture_output=True, text=True)
-    print(result.stderr.strip())  # print what went wrong
-    return result.stdout.strip()
+    errout = result.stderr.strip()
+    print(errout)
+    return result.stdout.strip() + "\n\n" + errout + "\n\nRan job script!"
 
 
 class StreamingOutput(object):
@@ -223,6 +224,18 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 "python3 /home/pi/mz-cube-robot/solving-example-code/scramble.py"
             ).encode("utf-8")
             print("Finished scambling")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Content-Length", len(commandout))
+            self.end_headers()
+            self.wfile.write(commandout)
+        elif self.path == "/solve":
+            didSomething = True
+            print("Running solving")
+            commandout = run_command(
+                "python3 /home/pi/mz-cube-robot/solving-example-code/solve.py"
+            ).encode("utf-8")
+            print("Finished solving")
             self.send_response(200)
             self.send_header("Content-Type", "text/html")
             self.send_header("Content-Length", len(commandout))
