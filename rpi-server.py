@@ -6,6 +6,7 @@ from threading import Condition
 from http import server
 import re
 import requests
+import subprocess
 
 PAGE = """\
 <html>
@@ -50,6 +51,11 @@ PAGE = """\
 </body>
 </html>
 """
+
+
+def run_command(command: str) -> str:
+    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+    return result.stdout.strip()
 
 
 class StreamingOutput(object):
@@ -207,6 +213,20 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header("Content-Length", len(content))
             self.end_headers()
             self.wfile.write(content)
+
+        # solving on the pi
+        elif self.path == "/scramble":
+            didSomething = True
+            print("Running scambling")
+            commandout = run_command(
+                "python3 ~/mz-cube-robot/solving-example-code/scramble.py"
+            )
+            print("Finished scambling")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Content-Length", len(commandout))
+            self.end_headers()
+            self.wfile.write(commandout)
 
         # fallback
         if not didSomething:
