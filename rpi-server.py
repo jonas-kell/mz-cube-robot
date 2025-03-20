@@ -220,7 +220,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             didSomething = True
             print("Running scambling")
             commandout = run_command(
-                "python3 ~/mz-cube-robot/solving-example-code/scramble.py"
+                "python3 /home/pi/mz-cube-robot/solving-example-code/scramble.py"
             ).encode("utf-8")
             print("Finished scambling")
             self.send_response(200)
