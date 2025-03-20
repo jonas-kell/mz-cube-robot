@@ -57,9 +57,9 @@ def run_command(command: str, workdir=None) -> str:
     result = subprocess.run(
         command, shell=True, capture_output=True, text=True, cwd=workdir
     )
-    errout = result.stderr.strip()
+    errout = result.stderr
     print(errout)
-    return result.stdout.strip() + "\n\n" + errout + "\n\nRan job script!"
+    return result.stdout + "\n\n" + errout + "\n\nRan job script!"
 
 
 class StreamingOutput(object):
