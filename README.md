@@ -23,7 +23,7 @@ The idea is to
 
 ## How is this realized
 
-A first version was made to work in September 2024. Videos of the Rsults can be seen above ([or HERE](https://github.com/user-attachments/assets/eca1f05e-32c8-4683-82ac-e17c1d3a330d)).
+A first version was made to work in September 2024. Videos of the Results can be seen above ([or HERE](https://github.com/user-attachments/assets/eca1f05e-32c8-4683-82ac-e17c1d3a330d)).
 
 The code and Hardware-Setup that is needed to get this working is fully contained in this repository.
 

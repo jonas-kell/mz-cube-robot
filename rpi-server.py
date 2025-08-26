@@ -184,12 +184,12 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 
             ## control motors
 
-            try:
+            try:  # AB Motors
                 # forward to ev3 server 1
                 ev3URL = "http://10.42.0.3/"
                 ev3count = 0
                 for port, minus, percent in instructions:
-                    if port == "A" or port == "B" or port == "C" or port == "D":
+                    if port == "A" or port == "B":
                         ev3URL += f"{port}{'-' if minus else ''}{percent}&"
                         ev3count += 1
                 if ev3count > 0:
@@ -201,7 +201,24 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 print(e)
                 state = "error\n"
 
-            if state != "error":
+            try:  # CD Motors
+                # forward to ev3 server 1
+                ev3URL = "http://10.42.0.3/"
+                ev3count = 0
+                for port, minus, percent in instructions:
+                    if port == "C" or port == "D":
+                        ev3URL += f"{port}{'-' if minus else ''}{percent}&"
+                        ev3count += 1
+                if ev3count > 0:
+                    print(f"Forwarding request {ev3URL} to ev3")
+                    response = requests.get(ev3URL, timeout=2)
+                    response.raise_for_status()
+                    state = response.text
+            except Exception as e:
+                print(e)
+                state = "error\n"
+
+            if state != "error":  # EF Motors
                 try:
                     # forward to ev3 server 2
                     ev3URL = "http://10.42.1.3/"
